@@ -1,0 +1,9 @@
+column,unique_values
+relationship,123
+race,99
+sex,96
+native_country,41
+workclass,14
+education,6
+marital_status,5
+occupation,2

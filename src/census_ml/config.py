@@ -28,6 +28,7 @@ TABLES_DIR = REPORTS_DIR / "tables"
 DATASET_NAME: str = "adult"
 TRAIN_FILE: str = "adult.data"
 TEST_FILE: str = "adult.test"
+CSV_FILE: str = "adult.csv"
 
 # Target column name
 TARGET_COL: str = "income"
@@ -52,6 +53,9 @@ NUMERICAL_FEATURES: list[str] = [
     "capital_loss",
     "hours_per_week",
 ]
+
+# All features combined
+ALL_FEATURES: list[str] = NUMERICAL_FEATURES + CATEGORICAL_FEATURES
 
 # Missing value indicator in the dataset
 MISSING_VALUE_INDICATOR: str = "?"

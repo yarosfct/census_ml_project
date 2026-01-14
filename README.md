@@ -125,6 +125,49 @@ cd ../..
 
 See `data/README.md` for more information about the dataset.
 
+### Steps 1+2: Dataset Inspection and Variant Preparation
+
+After downloading the dataset, run the inspection and preparation script:
+
+```bash
+# Inspect dataset and create variants (auto-detects format)
+python -m src.scripts.inspect_and_prepare
+
+# Or specify format explicitly
+python -m src.scripts.inspect_and_prepare --source uci_split
+```
+
+**What this does:**
+1. **Loads the dataset** - Automatically detects UCI split or CSV format
+2. **Runs comprehensive inspection** - Generates EDA statistics and visualizations
+3. **Creates two dataset variants**:
+   - **DROP variant**: Removes all rows with missing values (complete-case analysis)
+   - **IMPUTE variant**: Preserves NaN values for future pipeline-based imputation (prevents leakage)
+
+**Generated artifacts:**
+- `reports/dataset_summary.md` - Comprehensive markdown report
+- `reports/tables/*.csv` - Statistical tables (missingness, target distribution, etc.)
+- `reports/figures/*.png` - Visualizations (distributions, missing value plots, etc.)
+
+**Dataset Variants Explained:**
+
+The two variants support different modeling approaches:
+
+1. **DROP Variant** (Complete-case analysis)
+   - All rows with any missing values are removed
+   - Smaller dataset but no imputation needed
+   - Use when you prefer to avoid imputation assumptions
+
+2. **IMPUTE Variant** (Pipeline-based imputation)
+   - NaN values preserved for sklearn Pipeline imputation
+   - Larger dataset, requires proper imputation in cross-validation
+   - Prevents data leakage by deferring imputation to Pipeline
+   - **Important**: Must use `SimpleImputer` inside sklearn `Pipeline` during cross-validation
+
+**Leakage Prevention:**
+
+No preprocessing is fitted on the full dataset. The IMPUTE variant only marks missing values; actual imputation must happen inside cross-validation folds to prevent test set leakage.
+
 ## Development
 
 ### Code Quality
@@ -168,12 +211,12 @@ Please download the dataset separately and place it in the appropriate directory
 
 ## Project Phases
 
-- **✓ Step 0** (Current): Project structure and boilerplate
-- **Step 1**: Data loading and exploratory analysis
-- **Step 2**: Baseline preprocessing pipeline
-- **Step 3**: Enhanced preprocessing pipeline
-- **Step 4**: Model training and evaluation
-- **Step 5**: Statistical comparison and reporting
+- **✓ Step 0**: Project structure and boilerplate
+- **✓ Steps 1+2** (Current): Dataset inspection and variant preparation
+- **Step 3**: Baseline preprocessing pipeline
+- **Step 4**: Enhanced preprocessing and model training
+- **Step 5**: Hyperparameter tuning and evaluation
+- **Step 6**: Statistical comparison and reporting
 
 ## Contributors
 

@@ -23,13 +23,30 @@ This directory contains all data used in the Adult Census Income classification 
 
 ### Download Instructions
 
-Download the dataset files and place them in `data/raw/`:
+You have two options for obtaining the dataset:
+
+#### Option 1: UCI Split Format (Recommended)
+
+Download the original UCI train/test split files:
 
 ```bash
 cd data/raw
 wget https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
 wget https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test
 ```
+
+**Important**: The test file (`adult.test`) has a different format - it includes a period after each class label (e.g., `>50K.` instead of `>50K`). Our data loading utilities handle this automatically.
+
+#### Option 2: Single CSV File
+
+Alternatively, you can combine the files into a single CSV or download a pre-combined version:
+
+```bash
+cd data/raw
+# Download and combine manually, or place a pre-combined adult.csv file here
+```
+
+The data loader will auto-detect which format you have available.
 
 ### Dataset Description
 
