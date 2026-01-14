@@ -5,8 +5,6 @@ This module will contain functions for performing nested cross-validation,
 computing evaluation metrics, and statistical testing.
 """
 
-from typing import Dict, List
-
 import numpy as np
 from sklearn.metrics import (
     accuracy_score,
@@ -26,7 +24,7 @@ def compute_classification_metrics(
     y_true: np.ndarray,
     y_pred: np.ndarray,
     y_proba: np.ndarray = None,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     Compute standard classification metrics.
 
@@ -61,7 +59,7 @@ def cross_validate_model(
     X: np.ndarray,
     y: np.ndarray,
     cv: int = 5,
-) -> Dict[str, List[float]]:
+) -> dict[str, list[float]]:
     """
     Perform cross-validation and return metrics for each fold.
 

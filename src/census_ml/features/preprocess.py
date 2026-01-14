@@ -5,8 +5,6 @@ This module will contain preprocessing pipelines and transformations
 for the Adult dataset.
 """
 
-from typing import List, Optional
-
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -26,8 +24,8 @@ class MissingValueHandler(BaseEstimator, TransformerMixin):
 
     def __init__(
         self,
-        categorical_features: Optional[List[str]] = None,
-        numerical_features: Optional[List[str]] = None,
+        categorical_features: list[str] | None = None,
+        numerical_features: list[str] | None = None,
         missing_indicator: str = MISSING_VALUE_INDICATOR,
     ):
         """
