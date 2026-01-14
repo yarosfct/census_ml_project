@@ -6,6 +6,7 @@ of the dataset.
 """
 
 from pathlib import Path
+from typing import Optional, Tuple
 
 import pandas as pd
 
@@ -22,7 +23,7 @@ logger = get_logger(__name__)
 
 
 def load_raw_data(
-    data_path: Path | None = None,
+    data_path: Optional[Path] = None,
     filename: str = TRAIN_FILE,
 ) -> pd.DataFrame:
     """
@@ -64,7 +65,7 @@ def load_raw_data(
 
 def get_feature_target_split(
     df: pd.DataFrame,
-) -> tuple[pd.DataFrame, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Split dataframe into features (X) and target (y).
 

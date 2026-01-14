@@ -6,14 +6,15 @@ Provides a configured logger for consistent logging across the project.
 
 import logging
 import sys
+from typing import Optional
 
 from census_ml.config import LOG_LEVEL
 
 
 def get_logger(
     name: str,
-    level: str | None = None,
-    log_to_file: str | None = None,
+    level: Optional[str] = None,
+    log_to_file: Optional[str] = None,
 ) -> logging.Logger:
     """
     Get a configured logger instance.
