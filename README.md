@@ -203,47 +203,19 @@ This project follows best practices for reproducible machine learning research:
 - **Data versioning**: Raw data is immutable; all transformations are scripted
 - **Results tracking**: Experimental results will be saved in `reports/`
 
-## Data Policy
-
-**Important**: No raw data is committed to this repository. The `data/raw/`, `data/interim/`, and `data/processed/` directories are ignored by git. Only code and documentation are version-controlled.
-
-Please download the dataset separately and place it in the appropriate directory (see instructions above).
 
 ## Project Phases
 
 - **✓ Step 0**: Project structure and boilerplate
-- **✓ Steps 1+2** (Current): Dataset inspection and variant preparation
+- **✓ Steps 1+2**: Dataset inspection and variant preparation
 - **Step 3**: Baseline preprocessing pipeline
 - **Step 4**: Enhanced preprocessing and model training
 - **Step 5**: Hyperparameter tuning and evaluation
 - **Step 6**: Statistical comparison and reporting
 
-## Contributors
-
-- Your Name ([@yarosfct](https://github.com/yarosfct))
-
-## License
-
-MIT License - see LICENSE file for details
-
 ## References
 
 - Becker, B. & Kohavi, R. (1996). *Adult* [Dataset]. UCI Machine Learning Repository. https://archive.ics.uci.edu/ml/datasets/adult
-
-## Step 0 Completion Checklist
-
-This project has completed the initial scaffolding phase (Step 0):
-
-- [x] Git repository initialized and remote configured
-- [x] Folder structure created
-- [x] Configuration files (.gitignore, .editorconfig, pyproject.toml, Makefile)
-- [x] Python package structure (src/census_ml/)
-- [x] Core modules with minimal boilerplate
-- [x] Test suite setup
-- [x] Documentation (README files)
-- [x] Quick check script passes
-- [x] Import tests pass
-- [x] Code formatting and linting configured
 
 ### Verification
 

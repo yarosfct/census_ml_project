@@ -83,9 +83,13 @@ def inspect_dataset(df: pd.DataFrame) -> dict:
     for col in categorical_cols:
         n_unique = df[col].nunique()
         cardinality_data.append({"column": col, "unique_values": n_unique})
-    cardinality_df = pd.DataFrame(cardinality_data).sort_values("unique_values", ascending=False)
+    cardinality_df = pd.DataFrame(cardinality_data).sort_values(
+        "unique_values", ascending=False
+    )
     cardinality_df.to_csv(TABLES_DIR / "categorical_cardinality.csv", index=False)
-    logger.info(f"Saved categorical cardinality to {TABLES_DIR / 'categorical_cardinality.csv'}")
+    logger.info(
+        f"Saved categorical cardinality to {TABLES_DIR / 'categorical_cardinality.csv'}"
+    )
 
     # 6. Numerical statistics
     numeric_stats = df[numerical_cols].describe().T
@@ -101,7 +105,9 @@ def inspect_dataset(df: pd.DataFrame) -> dict:
     # Plot 1: Missing percentage by column (if any)
     if len(missingness_df) > 0:
         plt.figure(figsize=(10, 6))
-        plt.barh(missingness_df["column"], missingness_df["missing_percentage"], color="coral")
+        plt.barh(
+            missingness_df["column"], missingness_df["missing_percentage"], color="coral"
+        )
         plt.xlabel("Missing Percentage (%)")
         plt.ylabel("Column")
         plt.title("Missing Values by Column")
@@ -142,12 +148,16 @@ def inspect_dataset(df: pd.DataFrame) -> dict:
     for feature in key_features:
         if feature in df.columns:
             plt.figure(figsize=(8, 6))
-            plt.hist(df[feature].dropna(), bins=50, edgecolor="black", color="steelblue", alpha=0.7)
+            plt.hist(
+                df[feature].dropna(), bins=50, edgecolor="black", color="steelblue", alpha=0.7
+            )
             plt.xlabel(feature.replace("_", " ").title())
             plt.ylabel("Frequency")
             plt.title(f"Distribution of {feature.replace('_', ' ').title()}")
             plt.tight_layout()
-            plt.savefig(FIGURES_DIR / f"{feature}_histogram.png", dpi=100, bbox_inches="tight")
+            plt.savefig(
+                FIGURES_DIR / f"{feature}_histogram.png", dpi=100, bbox_inches="tight"
+            )
             plt.close()
             logger.info(f"Saved plot to {FIGURES_DIR / f'{feature}_histogram.png'}")
 
@@ -169,7 +179,9 @@ def inspect_dataset(df: pd.DataFrame) -> dict:
                 )
             ),
         },
-        "target_distribution": dict(zip(target_df["class"], target_df["count"], strict=True)),
+        "target_distribution": dict(
+            zip(target_df["class"], target_df["count"], strict=True)
+        ),
         "categorical_cardinality": dict(
             zip(
                 cardinality_df["column"],
@@ -224,7 +236,8 @@ def make_dataset_variant(
         rows_dropped = initial_rows - rows_kept
 
         logger.info(
-            f"DROP variant: kept {rows_kept}/{initial_rows} rows ({rows_dropped} rows dropped)"
+            f"DROP variant: kept {rows_kept}/{initial_rows} rows "
+            f"({rows_dropped} rows dropped)"
         )
 
         metadata = {
@@ -248,7 +261,8 @@ def make_dataset_variant(
         missing_count = X.isnull().sum().sum()
 
         logger.info(
-            f"IMPUTE variant: kept all {rows_kept} rows ({missing_count} missing values preserved)"
+            f"IMPUTE variant: kept all {rows_kept} rows "
+            f"({missing_count} missing values preserved)"
         )
 
         metadata = {
@@ -335,7 +349,9 @@ def dataset_report(
 
         # Variant summaries
         f.write("## Dataset Variants\n\n")
-        f.write("Two dataset variants have been prepared for different modeling approaches:\n\n")
+        f.write(
+            "Two dataset variants have been prepared for different modeling approaches:\n\n"
+        )
 
         for variant_name, outputs in variant_outputs.items():
             metadata = outputs["metadata"]
@@ -344,7 +360,9 @@ def dataset_report(
             f.write(f"- **Strategy**: {metadata['variant'].title()}\n")
             f.write(f"- **Rows Kept**: {metadata['rows_kept']:,}\n")
             f.write(f"- **Rows Dropped**: {metadata['rows_dropped']:,}\n")
-            f.write(f"- **Missing Values Remaining**: {metadata['missing_values_remaining']:,}\n")
+            f.write(
+                f"- **Missing Values Remaining**: {metadata['missing_values_remaining']:,}\n"
+            )
 
             f.write("\n**Class Balance**:\n")
             cb = metadata["class_balance"]
@@ -359,7 +377,9 @@ def dataset_report(
 
         # Leakage-safe approach
         f.write("## Leakage Prevention\n\n")
-        f.write("To prevent data leakage, preprocessing follows these principles:\n\n")
+        f.write(
+            "To prevent data leakage, preprocessing follows these principles:\n\n"
+        )
         f.write(
             "1. **IMPUTE variant**: Missing values are preserved as NaN. "
             "Imputation must be performed inside an sklearn Pipeline during "
@@ -380,7 +400,9 @@ def dataset_report(
         f.write("## Generated Artifacts\n\n")
         f.write("### Tables (CSV)\n")
         f.write(f"- `{TABLES_DIR.name}/missingness.csv` - Missing value statistics\n")
-        f.write(f"- `{TABLES_DIR.name}/target_distribution.csv` - Target class distribution\n")
+        f.write(
+            f"- `{TABLES_DIR.name}/target_distribution.csv` - Target class distribution\n"
+        )
         f.write(
             f"- `{TABLES_DIR.name}/categorical_cardinality.csv` - "
             f"Unique values per categorical feature\n"

@@ -172,7 +172,8 @@ def load_adult_dataset(
 
         if not csv_file.exists():
             raise FileNotFoundError(
-                f"CSV file not found: {csv_file}\nPlease place adult.csv in {data_path}"
+                f"CSV file not found: {csv_file}\n"
+                f"Please place adult.csv in {data_path}"
             )
 
         # Read single CSV file
@@ -180,7 +181,9 @@ def load_adult_dataset(
         logger.info(f"Loaded CSV: {len(df)} records")
 
     else:
-        raise ValueError(f"Invalid source: {source}. Must be 'uci_split', 'csv', or 'auto'")
+        raise ValueError(
+            f"Invalid source: {source}. Must be 'uci_split', 'csv', or 'auto'"
+        )
 
     # Standardize target labels (remove trailing periods)
     df[TARGET_COL] = _standardize_target_labels(df[TARGET_COL])
@@ -235,7 +238,9 @@ def load_raw_data(
     Raises:
         FileNotFoundError: If the data file does not exist.
     """
-    logger.warning("load_raw_data() is deprecated. Use load_adult_dataset() instead.")
+    logger.warning(
+        "load_raw_data() is deprecated. Use load_adult_dataset() instead."
+    )
 
     if data_path is None:
         data_path = DATA_RAW_DIR
