@@ -7,87 +7,62 @@ for the Adult dataset.
 
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from census_ml.config import CATEGORICAL_FEATURES, MISSING_VALUE_INDICATOR, NUMERICAL_FEATURES
 from census_ml.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
-
-class MissingValueHandler(BaseEstimator, TransformerMixin):
+class Preprocessor(BaseEstimator, TransformerMixin):
     """
-    Handle missing values in the Adult dataset.
-
-    Replaces missing indicators (?) with a dedicated 'Missing' category
-    for categorical features and uses median imputation for numerical features.
+    Handles missing values and one-hot encoding.
     """
 
-    def __init__(
-        self,
-        categorical_features: list[str] | None = None,
-        numerical_features: list[str] | None = None,
-        missing_indicator: str = MISSING_VALUE_INDICATOR,
-    ):
-        """
-        Initialize the missing value handler.
-
-        Args:
-            categorical_features: List of categorical feature names.
-            numerical_features: List of numerical feature names.
-            missing_indicator: String indicating missing values in the data.
-        """
-        self.categorical_features = categorical_features or CATEGORICAL_FEATURES
-        self.numerical_features = numerical_features or NUMERICAL_FEATURES
-        self.missing_indicator = missing_indicator
-        self.numerical_medians_ = {}
+    def __init__(self):
+        self.encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+        self.scaler = StandardScaler()
+        self.numeric_medians_ = {}
 
     def fit(self, X: pd.DataFrame, y=None):
-        """
-        Fit the transformer by computing medians for numerical features.
+        # Numerical medians
+        for col in NUMERICAL_FEATURES:
+            self.numeric_medians_[col] = X[col].median()
 
-        Args:
-            X: Input features.
-            y: Target (ignored).
+        # Numerical scaling (fit after imputation)
+        X_num = X[NUMERICAL_FEATURES].copy()
+        for col in NUMERICAL_FEATURES:
+            X_num[col] = X_num[col].fillna(self.numeric_medians_[col])
+        self.scaler.fit(X_num)
 
-        Returns:
-            self
-        """
-        for col in self.numerical_features:
-            if col in X.columns:
-                self.numerical_medians_[col] = X[col].median()
+        # Replace missing categorical values
+        X_cat = X[CATEGORICAL_FEATURES].replace(
+            MISSING_VALUE_INDICATOR, "Missing"
+        )
 
+        self.encoder.fit(X_cat)
         return self
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        """
-        Transform the data by handling missing values.
+    def transform(self, X: pd.DataFrame):
+        X = X.copy()
 
-        Args:
-            X: Input features.
+        # Numerical
+        for col in NUMERICAL_FEATURES:
+            X[col] = X[col].fillna(self.numeric_medians_[col])
 
-        Returns:
-            Transformed dataframe with missing values handled.
-        """
-        X_copy = X.copy()
+        # Categorical
+        X_cat = X[CATEGORICAL_FEATURES].replace(
+            MISSING_VALUE_INDICATOR, "Missing"
+        )
+        X_cat_enc = self.encoder.transform(X_cat)
 
-        # Handle categorical missing values
-        for col in self.categorical_features:
-            if col in X_copy.columns:
-                X_copy[col] = X_copy[col].replace(self.missing_indicator, "Missing")
-
-        # Handle numerical missing values (if any)
-        for col in self.numerical_features:
-            if col in X_copy.columns and col in self.numerical_medians_:
-                X_copy[col].fillna(self.numerical_medians_[col], inplace=True)
-
-        return X_copy
-
-
-# Placeholder for future preprocessing classes
-# class FeatureEncoder(BaseEstimator, TransformerMixin):
-#     """Encode categorical features."""
-#     pass
-
-# class FeatureScaler(BaseEstimator, TransformerMixin):
-#     """Scale numerical features."""
-#     pass
+        X_num = X[NUMERICAL_FEATURES].to_numpy()
+        return pd.DataFrame(
+            data=pd.concat(
+                [
+                    pd.DataFrame(X_num),
+                    pd.DataFrame(X_cat_enc),
+                ],
+                axis=1,
+            ).values
+        )

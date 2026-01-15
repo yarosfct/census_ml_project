@@ -14,7 +14,7 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from sklearn.model_selection import cross_val_predict
-
+from sklearn.model_selection import StratifiedKFold, GridSearchCV
 from census_ml.utils.logging import get_logger
 
 logger = get_logger(__name__)
@@ -85,10 +85,49 @@ def cross_validate_model(
     return metrics
 
 
-# Placeholder for future evaluation functions
-# def nested_cross_validation(...):
-#     """Perform nested cross-validation with hyperparameter tuning."""
-#     pass
+def nested_cross_validation(model, X, y, param_grid, outer_cv=5, inner_cv=3,):
+    """Perform nested cross-validation with hyperparameter tuning."""
+    outer_splitter = StratifiedKFold(
+        n_splits=outer_cv, shuffle=True, random_state=42
+    )
+
+    metrics = {
+        "accuracy": [],
+        "precision": [],
+        "recall": [],
+        "f1": [],
+        "roc_auc": [],
+    }
+
+    for train_idx, test_idx in outer_splitter.split(X, y):
+        X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
+        y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+
+        grid = GridSearchCV(
+            estimator=model,
+            param_grid=param_grid,
+            cv=inner_cv,
+            scoring="f1",
+            n_jobs=1,
+        )
+        grid.fit(X_train, y_train)
+
+        best_model = grid.best_estimator_
+        y_pred = best_model.predict(X_test)
+
+        try:
+            y_proba = best_model.predict_proba(X_test)[:, 1]
+        except Exception:
+            y_proba = None
+
+        fold_metrics = compute_classification_metrics(
+            y_test, y_pred, y_proba
+        )
+
+        for k in metrics:
+            metrics[k].append(fold_metrics[k])
+
+    return {k: float(np.mean(v)) for k, v in metrics.items()}
 
 # def statistical_comparison(...):
 #     """Perform statistical tests to compare models."""

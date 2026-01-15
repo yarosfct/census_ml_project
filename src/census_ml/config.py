@@ -30,6 +30,24 @@ TRAIN_FILE: str = "adult.data"
 TEST_FILE: str = "adult.test"
 CSV_FILE: str = "adult.csv"
 
+# Column names
+COLUMN_NAMES: list[str] = [
+    "age",
+    "workclass",
+    "fnlwgt",
+    "education",
+    "education_num",
+    "marital_status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "capital_gain",
+    "capital_loss",
+    "hours_per_week",
+    "native_country",
+    "income"
+]
 # Target column name
 TARGET_COL: str = "income"
 
