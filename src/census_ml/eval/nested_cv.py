@@ -54,37 +54,6 @@ def compute_classification_metrics(
     return metrics
 
 
-def cross_validate_model(
-    model,
-    X: np.ndarray,
-    y: np.ndarray,
-    cv: int = 5,
-) -> dict[str, list[float]]:
-    """
-    Perform cross-validation and return metrics for each fold.
-
-    Args:
-        model: Sklearn-compatible model.
-        X: Feature matrix.
-        y: Target vector.
-        cv: Number of cross-validation folds.
-
-    Returns:
-        Dictionary of metric names to lists of fold-wise scores.
-    """
-    logger.info(f"Running {cv}-fold cross-validation")
-
-    # Get cross-validated predictions
-    y_pred = cross_val_predict(model, X, y, cv=cv)
-
-    # Compute metrics
-    metrics = compute_classification_metrics(y, y_pred)
-
-    logger.info(f"Cross-validation metrics: {metrics}")
-
-    return metrics
-
-
 def nested_cross_validation(model, X, y, param_grid, outer_cv=5, inner_cv=3,):
     """Perform nested cross-validation with hyperparameter tuning."""
     outer_splitter = StratifiedKFold(
