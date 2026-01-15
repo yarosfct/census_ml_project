@@ -23,6 +23,7 @@ DATA_PROCESSED_DIR = DATA_DIR / "processed"
 REPORTS_DIR = PROJECT_ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 TABLES_DIR = REPORTS_DIR / "tables"
+RESULTS_DIR = REPORTS_DIR / "results"
 
 # Dataset configuration
 DATASET_NAME: str = "adult"

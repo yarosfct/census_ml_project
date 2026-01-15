@@ -30,7 +30,7 @@ from census_ml.features.preprocess import Preprocessor
 from census_ml.eval.nested_cv import nested_cross_validation
 
 from census_ml.utils.logging import get_logger
-from census_ml.config import COLUMN_NAMES, DATA_RAW_DIR, TRAIN_FILE, TARGET_COL
+from census_ml.config import COLUMN_NAMES, DATA_RAW_DIR, TRAIN_FILE, TARGET_COL, RESULTS_DIR
 
 logger = get_logger(__name__)
 
@@ -102,13 +102,16 @@ def main():
         names=COLUMN_NAMES
     )
 
-    df = df.iloc[:500]
     X = df.drop(columns=[TARGET_COL])
     y = df[TARGET_COL]
 
     y = y.map({">50K": 1, "<=50K": 0})
 
-    run_experiments(X, y)
+    results = run_experiments(X, y)
+
+    results_path = RESULTS_DIR / "experiment_results.txt"
+    with open(results_path, "w") as f:
+        f.write(pd.DataFrame(results).to_string())
     
     # Future implementation:
     # 5. Compare models statistically
