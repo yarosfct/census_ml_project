@@ -41,37 +41,27 @@ class Preprocessor(BaseEstimator, TransformerMixin):
             
             # Replace missing categorical values
             X_cat = X_cat.replace(MISSING_VALUE_INDICATOR, "Missing")
-        else:
-            # Drop rows with missing values
-            X_num = X_num[X_num.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
-            X_cat = X_cat[X_cat.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
 
         self.scaler.fit(X_num)
         self.encoder.fit(X_cat)
         return self
 
     def transform(self, X: pd.DataFrame):
-        X = X.copy()
-        X_cat = None
+        X_num = X[NUMERICAL_FEATURES].copy()
+        X_num = X_num.apply(pd.to_numeric, errors='coerce')
+        X_cat = X[CATEGORICAL_FEATURES].copy()
 
         if self.impute:
             # Numerical
             for col in NUMERICAL_FEATURES:
-                X[col] = pd.to_numeric(X[col], errors='coerce')
-                X[col] = X[col].fillna(self.numeric_medians_[col])
+                X_num[col] = X_num[col].fillna(self.numeric_medians_[col])
 
             # Categorical
-            X_cat = X[CATEGORICAL_FEATURES].replace(
-                MISSING_VALUE_INDICATOR, "Missing"
-            )
-        else:
-            # Drop rows with missing values
-            X = X[X.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
-            X_cat = X[CATEGORICAL_FEATURES]
-
+            X_cat = X_cat.replace(MISSING_VALUE_INDICATOR, "Missing")
+        
+        X_num = self.scaler.transform(X_num)
         X_cat_enc = self.encoder.transform(X_cat)
-
-        X_num = X[NUMERICAL_FEATURES].to_numpy()
+        
         return pd.DataFrame(
             data=pd.concat(
                 [

@@ -37,6 +37,14 @@ from census_ml.data.load_data import load_data, get_feature_target_split
 
 logger = get_logger(__name__)
 
+def drop_missing_values(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Drop rows with missing values indicated by MISSING_VALUE_INDICATOR.
+    """
+    from census_ml.config import MISSING_VALUE_INDICATOR
+
+    return df.replace(MISSING_VALUE_INDICATOR, pd.NA).dropna()
+
 def perform_statistical_comparison(all_results):
     """
     Perform pairwise Wilcoxon signed-rank tests between models.
@@ -167,6 +175,7 @@ def main():
     adult_test_path = DATA_RAW_DIR / TEST_FILE
 
     df = load_data(adult_train_path, adult_test_path)
+    #df = drop_missing_values(df)
     X, y = get_feature_target_split(df)
 
     y = y.map({">50K": 1, "<=50K": 0})
