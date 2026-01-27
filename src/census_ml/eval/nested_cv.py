@@ -7,16 +7,21 @@ computing evaluation metrics, and statistical testing.
 
 import numpy as np
 from sklearn.metrics import (
-    accuracy_score,
     f1_score,
     precision_score,
     recall_score,
     roc_auc_score,
 )
 from sklearn.model_selection import cross_val_predict
-from sklearn.model_selection import StratifiedKFold, GridSearchCV
+from sklearn.model_selection import StratifiedKFold, GridSearchCV, RepeatedStratifiedKFold
 from census_ml.utils.logging import get_logger
 
+from tqdm import tqdm
+
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 logger = get_logger(__name__)
 
 
@@ -37,7 +42,6 @@ def compute_classification_metrics(
         Dictionary of metric names to values.
     """
     metrics = {
-        "accuracy": accuracy_score(y_true, y_pred),
         "precision": precision_score(y_true, y_pred, average="binary", zero_division=0),
         "recall": recall_score(y_true, y_pred, average="binary", zero_division=0),
         "f1": f1_score(y_true, y_pred, average="binary", zero_division=0),
@@ -85,21 +89,25 @@ def cross_validate_model(
     return metrics
 
 
-def nested_cross_validation(model, X, y, param_grid, outer_cv=5, inner_cv=3,):
+def nested_cross_validation(model, X, y, param_grid, outer_cv_splits=5, outer_cv_repeats=2, inner_cv=3):
     """Perform nested cross-validation with hyperparameter tuning."""
-    outer_splitter = StratifiedKFold(
-        n_splits=outer_cv, shuffle=True, random_state=42
+    # Use 5 splits with 2 repeats for more robust statistical testing
+    outer_splitter = RepeatedStratifiedKFold(
+        n_splits=outer_cv_splits, n_repeats=outer_cv_repeats, random_state=42
     )
 
     metrics = {
-        "accuracy": [],
+        "outer_fold": [],
         "precision": [],
         "recall": [],
         "f1": [],
         "roc_auc": [],
+        "best_inner_auc": [],
+        "best_params": []
     }
 
-    for train_idx, test_idx in outer_splitter.split(X, y):
+    for i, (train_idx, test_idx) in enumerate(tqdm(outer_splitter.split(X, y), total=outer_cv_splits * outer_cv_repeats)):
+        metrics["outer_fold"].append(i)
         X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
         y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
 
@@ -107,7 +115,7 @@ def nested_cross_validation(model, X, y, param_grid, outer_cv=5, inner_cv=3,):
             estimator=model,
             param_grid=param_grid,
             cv=inner_cv,
-            scoring="f1",
+            scoring="roc_auc",
             n_jobs=1,
         )
         grid.fit(X_train, y_train)
@@ -124,10 +132,13 @@ def nested_cross_validation(model, X, y, param_grid, outer_cv=5, inner_cv=3,):
             y_test, y_pred, y_proba
         )
 
-        for k in metrics:
+        for k in fold_metrics:
             metrics[k].append(fold_metrics[k])
+        
+        metrics["best_inner_auc"].append(grid.best_score_)
+        metrics["best_params"].append(grid.best_params_)
 
-    return {k: float(np.mean(v)) for k, v in metrics.items()}
+    return metrics
 
 # def statistical_comparison(...):
 #     """Perform statistical tests to compare models."""

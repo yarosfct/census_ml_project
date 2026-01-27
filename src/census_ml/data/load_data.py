@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from census_ml.config import (
+    COLUMN_NAMES,
     ALL_FEATURES,
     CSV_FILE,
     DATA_RAW_DIR,
@@ -262,5 +263,36 @@ def load_raw_data(
     df = pd.read_csv(file_path, names=column_names, skipinitialspace=True)
 
     logger.info(f"Loaded {len(df)} records with {len(df.columns)} columns")
+
+    return df
+
+def load_data(
+        train_path: Path,
+        test_path: Path
+) -> pd.DataFrame:
+    if not (train_path.exists() and test_path.exists()):
+        raise FileNotFoundError(
+            f"Train and test files not found.\n"
+        )
+
+    df_train = pd.read_csv(
+        train_path,
+        sep=",",
+        skipinitialspace=True,
+        header=None,
+        names=COLUMN_NAMES
+    )
+
+    df_test = pd.read_csv(
+        test_path,
+        sep=",",
+        skipinitialspace=True,
+        header=None,
+        names=COLUMN_NAMES
+    )
+    df_test = df_test[1:] # remove first row which is header in test file
+    df_test[TARGET_COL] = df_test[TARGET_COL].str.rstrip('.')  # Remove trailing period from target labels
+
+    df = pd.concat([df_train, df_test], axis=0, ignore_index=True)
 
     return df

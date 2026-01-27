@@ -19,41 +19,56 @@ class Preprocessor(BaseEstimator, TransformerMixin):
     Handles missing values and one-hot encoding.
     """
 
-    def __init__(self):
+    def __init__(self, impute = True):
         self.encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
         self.scaler = StandardScaler()
         self.numeric_medians_ = {}
+        self.impute = impute
 
     def fit(self, X: pd.DataFrame, y=None):
-        # Numerical medians
-        for col in NUMERICAL_FEATURES:
-            self.numeric_medians_[col] = X[col].median()
-
-        # Numerical scaling (fit after imputation)
         X_num = X[NUMERICAL_FEATURES].copy()
-        for col in NUMERICAL_FEATURES:
-            X_num[col] = X_num[col].fillna(self.numeric_medians_[col])
+        X_num = X_num.apply(pd.to_numeric, errors='coerce')
+        X_cat = X[CATEGORICAL_FEATURES].copy()
+
+        if self.impute:
+            # Numerical medians
+            for col in NUMERICAL_FEATURES:
+                self.numeric_medians_[col] = X[col].median()
+
+            # Numerical scaling (fit after imputation)
+            for col in NUMERICAL_FEATURES:
+                X_num[col] = X_num[col].fillna(self.numeric_medians_[col])
+            
+            # Replace missing categorical values
+            X_cat = X_cat.replace(MISSING_VALUE_INDICATOR, "Missing")
+        else:
+            # Drop rows with missing values
+            X_num = X_num[X_num.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
+            X_cat = X_cat[X_cat.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
+
         self.scaler.fit(X_num)
-
-        # Replace missing categorical values
-        X_cat = X[CATEGORICAL_FEATURES].replace(
-            MISSING_VALUE_INDICATOR, "Missing"
-        )
-
         self.encoder.fit(X_cat)
         return self
 
     def transform(self, X: pd.DataFrame):
         X = X.copy()
+        X_cat = None
 
-        # Numerical
-        for col in NUMERICAL_FEATURES:
-            X[col] = X[col].fillna(self.numeric_medians_[col])
+        if self.impute:
+            # Numerical
+            for col in NUMERICAL_FEATURES:
+                X[col] = pd.to_numeric(X[col], errors='coerce')
+                X[col] = X[col].fillna(self.numeric_medians_[col])
 
-        # Categorical
-        X_cat = X[CATEGORICAL_FEATURES].replace(
-            MISSING_VALUE_INDICATOR, "Missing"
-        )
+            # Categorical
+            X_cat = X[CATEGORICAL_FEATURES].replace(
+                MISSING_VALUE_INDICATOR, "Missing"
+            )
+        else:
+            # Drop rows with missing values
+            X = X[X.ne(MISSING_VALUE_INDICATOR).all(axis=1)]
+            X_cat = X[CATEGORICAL_FEATURES]
+
         X_cat_enc = self.encoder.transform(X_cat)
 
         X_num = X[NUMERICAL_FEATURES].to_numpy()
