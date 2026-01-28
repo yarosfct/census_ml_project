@@ -1,0 +1,77 @@
+% Nested CV diagram: outer fold split + inner 3-fold CV with rotating validation
+% Use in poster: \resizebox{0.95\textwidth}{!}{\input{figures/nested_cv.tikz}}
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  outerbox/.style={draw=black, line width=1.2pt, rounded corners=3pt, fill=blue!25},
+  trainbox/.style={draw=black, line width=1pt, fill=green!60!black!50},
+  valbox/.style={draw=black, line width=1pt, fill=yellow!70!orange},
+  testbox/.style={draw=black, line width=1pt, fill=gray!40},
+  innerframe/.style={draw=black, line width=1pt, rounded corners=2pt, fill=white},
+  legendbox/.style={draw=black, line width=0.8pt}
+]
+  % --- Top: Outer fold (1 of 10) ---
+  \node[above, font=\bfseries] at (5, 4.5) {Outer Fold (1 of 10)};
+  \draw[outerbox] (0.2, 3.3) rectangle (9.8, 4.3);
+
+  % Training set (left) - ensure no overlap
+  \draw[trainbox] (0.4, 3.4) rectangle (5.5, 4.2);
+  \node[white, font=\bfseries, align=center] at (2.95, 3.95) {Training Set};
+  \node[white, font=\tiny, align=center] at (2.95, 3.7) {(Inner 3-fold CV)};
+
+  % Test set (right) - clear gap from training
+  \draw[testbox] (6.0, 3.4) rectangle (9.6, 4.2);
+  \node[font=\bfseries, align=center] at (7.8, 3.95) {Test Set};
+  \node[font=\tiny, align=center] at (7.8, 3.7) {(Held Out)};
+
+  % Arrow: evaluation flow toward test
+  \draw[->, line width=1.5pt] (4.8, 2.5) -- (7.8, 3.4);
+
+  % --- Middle: Inner 3-fold CV ---
+  \draw[innerframe] (0.8, 1.0) rectangle (9.2, 2.4);
+  \node[above, font=\bfseries] at (5, 2.45) {Inner 3-Fold CV: Hyperparameter Tuning};
+
+  % Row 1: Iteration 1 — Fold 1 = Validation (FIRST position)
+  \node[anchor=east, font=\bfseries\tiny] at (1.2, 2.0) {Iter 1};
+  \draw[valbox] (1.6, 1.85) rectangle (2.8, 2.15);
+  \node[font=\bfseries\tiny, align=center] at (2.2, 2.0) {Val};
+  \draw[trainbox] (3.1, 1.85) rectangle (4.3, 2.15);
+  \node[white, font=\bfseries\tiny, align=center] at (3.7, 2.0) {Train};
+  \draw[trainbox] (4.6, 1.85) rectangle (5.8, 2.15);
+  \node[white, font=\bfseries\tiny, align=center] at (5.2, 2.0) {Train};
+
+  % Row 2: Iteration 2 — Fold 2 = Validation (SECOND position)
+  \node[anchor=east, font=\bfseries\tiny] at (1.2, 1.7) {Iter 2};
+  \draw[trainbox] (1.6, 1.55) rectangle (2.8, 1.85);
+  \node[white, font=\bfseries\tiny, align=center] at (2.2, 1.7) {Train};
+  \draw[valbox] (3.1, 1.55) rectangle (4.3, 1.85);
+  \node[font=\bfseries\tiny, align=center] at (3.7, 1.7) {Val};
+  \draw[trainbox] (4.6, 1.55) rectangle (5.8, 1.85);
+  \node[white, font=\bfseries\tiny, align=center] at (5.2, 1.7) {Train};
+
+  % Row 3: Iteration 3 — Fold 3 = Validation (THIRD position)
+  \node[anchor=east, font=\bfseries\tiny] at (1.2, 1.4) {Iter 3};
+  \draw[trainbox] (1.6, 1.25) rectangle (2.8, 1.55);
+  \node[white, font=\bfseries\tiny, align=center] at (2.2, 1.4) {Train};
+  \draw[trainbox] (3.1, 1.25) rectangle (4.3, 1.55);
+  \node[white, font=\bfseries\tiny, align=center] at (3.7, 1.4) {Train};
+  \draw[valbox] (4.6, 1.25) rectangle (5.8, 1.55);
+  \node[font=\bfseries\tiny, align=center] at (5.2, 1.4) {Val};
+
+  % Arrow to "Select Best Params"
+  \draw[->, line width=1.2pt] (9.2, 1.7) -- (9.6, 1.7);
+  \node[anchor=west, font=\bfseries\tiny, align=left] at (9.65, 1.7) {Best\\Params};
+
+  % --- Bottom: Evaluation text ---
+  \node[font=\bfseries\tiny, align=center] at (5, 0.6) {Train Final Model $\rightarrow$ Evaluate on Outer Test Fold};
+
+  % --- Legend ---
+  \draw[legendbox, fill=green!60!black!50] (1.0, 0.05) rectangle (1.5, 0.25);
+  \node[anchor=west, font=\tiny] at (1.55, 0.15) {Training};
+  \draw[legendbox, fill=yellow!70!orange] (3.5, 0.05) rectangle (4.0, 0.25);
+  \node[anchor=west, font=\tiny] at (4.05, 0.15) {Validation};
+  \draw[legendbox, fill=gray!40] (6.0, 0.05) rectangle (6.5, 0.25);
+  \node[anchor=west, font=\tiny] at (6.55, 0.15) {Test};
+
+  % Summary line
+  \node[font=\itshape\tiny, align=center] at (5, -0.15) {Outer: 5 folds $\times$ 2 repeats = 10 evaluations \quad|\quad Inner: 3-fold CV};
+\end{tikzpicture}

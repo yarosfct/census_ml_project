@@ -1,0 +1,324 @@
+% Gemini theme
+% https://github.com/anishathalye/gemini
+
+\documentclass[final]{beamer}
+
+% ====================
+% Packages
+% ====================
+
+\usepackage[size=a1,scale=1.25,orientation=portrait]{beamerposter}
+\usetheme{gemini}
+\usecolortheme{pwr}
+% fontawesome loaded by theme if available
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+\usepackage{anyfontsize}
+
+% ====================
+% Lengths
+% ====================
+
+% If you have N columns, choose \sepwidth and \colwidth such that
+% (N+1)*\sepwidth + N*\colwidth = \paperwidth
+\newlength{\sepwidth}
+\newlength{\colwidth}
+\setlength{\sepwidth}{0.025\paperwidth}
+\setlength{\colwidth}{0.3\paperwidth}
+
+\newcommand{\separatorcolumn}{\begin{column}{\sepwidth}\end{column}}
+
+% ====================
+% Title
+% ====================
+
+\title{Adult Income Prediction: Impact of Preprocessing and Tuning on Classical ML Models}
+
+\author{Ferdynand Sikora \and Krystyna Supińska}
+% TODO: Update author names if needed
+\email{123456@student.pwr.edu.pl}
+\institute{\href{https://kssk.pwr.edu.pl}{Katedra Systemów i Sieci Komputerowych}}
+
+% ====================
+% Footer (optional)
+% ====================
+
+% (can be left out to remove footer)
+\footercontent{\insertinstitute}
+
+% ====================
+% Logo (optional)
+% ====================
+
+% use this to include logo side of the header:
+\logoright{\includegraphics[width=4cm]{logo/pwr}}
+
+% ====================
+% Body
+% ====================
+
+\begin{document}
+
+\begin{frame}[t]
+\begin{columns}[t]
+\separatorcolumn
+
+% ====================
+% COLUMN 1: Context + Data + Pipeline
+% ====================
+\begin{column}{\colwidth}
+
+  % ------------------
+  % Block 1: Introduction / Motivation
+  % ------------------
+  \begin{block}{Introduction}
+
+    This study addresses the binary classification task of predicting whether an individual's 
+    annual income exceeds \$50,000 based on demographic and employment attributes from the 
+    UCI Adult Census Income dataset. The dataset serves as a classic benchmark for evaluating 
+    tabular machine learning methods and illustrates the effects of preprocessing choices on 
+    model performance.
+
+    \textbf{Research Question:} \textit{How much do preprocessing choices and hyperparameter 
+    tuning influence the predictive performance of classical machine-learning models on the 
+    Adult income prediction task?}
+
+  \end{block}
+
+  % ------------------
+  % Figure 1: Dataset Snapshot
+  % ------------------
+  \begin{block}{Dataset Overview}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.9\textwidth]{figures/class_distribution.png}
+      \caption{Target class distribution showing significant imbalance.}
+    \end{figure}
+
+    \textbf{Dataset Statistics:}
+    \begin{itemize}
+      \item \textbf{N = 48,842} samples (combined train + test)
+      \item \textbf{14 features}: 6 numerical, 8 categorical
+      \item \textbf{Class imbalance}: 76\% ($\leq$50K) vs 24\% ($>$50K)
+      \item \textbf{Missing values}: 6,465 total (workclass, native\_country, fnlwgt)
+    \end{itemize}
+
+  \end{block}
+
+  % ------------------
+  % Block 2: Objectives / Contributions
+  % ------------------
+  \begin{block}{Objectives}
+
+    \begin{itemize}
+      \item \textbf{Compare classical ML models} under a consistent preprocessing pipeline
+      \item \textbf{Quantify preprocessing effects}, particularly missing value handling and 
+            feature selection strategies
+      \item \textbf{Rigorous evaluation} using nested stratified cross-validation with 
+            multiple metrics and statistical significance testing
+    \end{itemize}
+
+  \end{block}
+
+  % ------------------
+  % Block 3: Preprocessing Pipeline & Architecture (merged)
+  % ------------------
+  \begin{block}{Preprocessing Pipeline \& Architecture}
+
+    \textbf{Preprocessing:} Missing values → ``Missing'' category; One-hot encoding; StandardScaler; Mutual Information feature selection (non-tree models only).
+
+    \vspace{-1em}
+    \begin{figure}[!ht]
+      \centering
+      \includegraphics[width=\textwidth]{figures/pipeline_flowchart.png}
+      \caption{Preprocessing and modeling pipeline. Dashed border = conditional step (non-tree models only). Dashed arrow = tree models bypass feature selection.}
+    \end{figure}
+    \vspace{-0.6em}
+
+  \end{block}
+
+\end{column}
+
+\separatorcolumn
+
+% ====================
+% COLUMN 2: Methodology + Experimental Design
+% ====================
+\begin{column}{\colwidth}
+
+  % ------------------
+  % Block 4: Models Compared
+  % ------------------
+  \begin{block}{Models Compared}
+
+    We evaluate five classical machine learning algorithms:
+
+    \begin{itemize}
+      \item \textbf{Logistic Regression} --- Linear baseline with L2 regularization
+      \item \textbf{Naive Bayes (Gaussian)} --- Probabilistic generative baseline
+      \item \textbf{k-Nearest Neighbors} --- Instance-based method, sensitive to scaling
+      \item \textbf{Random Forest} --- Ensemble of decision trees with bagging
+      \item \textbf{XGBoost} --- Gradient boosting with regularization
+    \end{itemize}
+
+  \end{block}
+
+  % ------------------
+  % Figure 3: Nested CV Diagram
+  % ------------------
+  \begin{block}{Study Design}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.95\textwidth]{figures/nested_cv.png}
+      \caption{Nested cross-validation design. Outer loop (5 folds × 2 repeats = 10 evaluations) provides unbiased performance estimates. Inner loop (3-fold CV) tunes hyperparameters on the training set only.}
+    \end{figure}
+
+  \end{block}
+
+  % ------------------
+  % Table: Hyperparameter Search Space
+  % ------------------
+  \begin{block}{Hyperparameter Search Space}
+
+    \begin{table}
+      \centering
+      \small
+      \begin{tabular}{@{}l p{0.6\linewidth}@{}}
+        \toprule
+        \textbf{Model} & \textbf{Tuned Parameters} \\
+        \midrule
+        Logistic Regression & C: \{0.01, 0.1, 1, 10\} \\
+        k-NN & n\_neighbors: \{3, 5, 7\} \\
+        Random Forest & n\_estimators: \{100, 200\} \\
+        XGBoost & max\_depth: \{3, 5\}, learning\_rate: \{0.05, 0.1\}, n\_estimators: \{100, 200\}, subsample: \{0.8, 1.0\} \\
+        \bottomrule
+      \end{tabular}
+      \caption{Key hyperparameters explored via grid search. Feature selection (k) tuned for non-tree models.}
+    \end{table}
+
+  \end{block}
+
+  % ------------------
+  % Block: Statistical Comparison (Wilcoxon)
+  % ------------------
+  \begin{block}{Statistical Comparison (Wilcoxon)}
+
+    \textbf{Goal:} Assess whether performance differences are statistically significant across paired outer-fold ROC-AUC scores.
+
+    \vspace{-0.5em}
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.95\textwidth]{figures/wilcoxon_heatmap.png}
+      \caption{Pairwise Wilcoxon signed-rank test p-values (ROC-AUC). Green indicates significant differences ($p < 0.05$).}
+    \end{figure}
+
+  \end{block}
+
+\end{column}
+
+\separatorcolumn
+
+% ====================
+% COLUMN 3: Results + Takeaways
+% ====================
+\begin{column}{\colwidth}
+
+  % ------------------
+  % Alertblock: Key Findings
+  % ------------------
+  \begin{alertblock}{Key Findings}
+
+    % TODO: Update with actual experimental results
+    \begin{itemize}
+      \item \textbf{Best performers:} XGBoost and Random Forest achieved highest mean ROC-AUC 
+            across outer folds
+      \item \textbf{Preprocessing impact:} ``Missing'' category encoding improved model stability 
+            compared to row dropping
+      \item \textbf{Feature selection:} MI-based selection provided marginal benefit for 
+            linear models but was unnecessary for tree-based methods
+    \end{itemize}
+
+  \end{alertblock}
+
+  % ------------------
+  % Figure 4: Performance Comparison
+  % ------------------
+  \begin{block}{Model Performance Comparison}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.95\textwidth]{figures/model_comparison.png}
+      \caption{Performance comparison across models. Error bars show standard deviation across 10 outer folds.}
+    \end{figure}
+
+  \end{block}
+
+  % ------------------
+  % Figure 5: Metrics Comparison
+  % ------------------
+  \begin{block}{Performance Metrics Comparison}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.95\textwidth]{figures/roc_curves.png}
+      \caption{Comparison of Precision, Recall, F1-Score, and ROC-AUC across all models. Error bars show standard deviation across 10 outer folds.}
+    \end{figure}
+
+  \end{block}
+
+  % ------------------
+  % Table 2: Performance Summary
+  % ------------------
+  \begin{block}{Performance Summary}
+
+    \begin{table}
+      \centering
+      \small
+      \begin{tabular}{l c c c c}
+        \toprule
+        \textbf{Model} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{AUC} \\
+        \midrule
+        XGBoost  & 0.787{\tiny$\pm$0.005} & 0.653{\tiny$\pm$0.010} & 0.713{\tiny$\pm$0.007} & 0.930{\tiny$\pm$0.003} \\
+        RF       & 0.730{\tiny$\pm$0.011} & 0.624{\tiny$\pm$0.013} & 0.673{\tiny$\pm$0.010} & 0.904{\tiny$\pm$0.004} \\
+        Log.Reg. & 0.733{\tiny$\pm$0.009} & 0.586{\tiny$\pm$0.012} & 0.651{\tiny$\pm$0.009} & 0.904{\tiny$\pm$0.004} \\
+        \bottomrule
+      \end{tabular}
+      \caption{Top 3 models (mean $\pm$ std across 10 outer folds).}
+    \end{table}
+
+  \end{block}
+
+  % ------------------
+  % Block: Discussion / Limitations
+  % ------------------
+  \begin{block}{Discussion \& Limitations}
+
+    \begin{itemize}
+      \item \textbf{Dataset age:} 1994 Census data may not reflect current income patterns
+      \item \textbf{High dimensionality:} One-hot encoding expands feature space significantly
+    \end{itemize}
+
+  \end{block}
+
+  % ------------------
+  % Block: Conclusion
+  % ------------------
+  \begin{block}{Conclusion}
+
+    XGBoost achieved the highest ROC-AUC (0.930), significantly outperforming all other models according to Wilcoxon signed-rank tests. Encoding missing values as a dedicated category proved effective, and Mutual Information feature selection offered marginal gains for non-tree models. For practitioners, gradient boosting with careful preprocessing provides the best accuracy--complexity tradeoff on tabular census data.
+
+  \end{block}
+
+
+\end{column}
+
+\separatorcolumn
+\end{columns}
+\end{frame}
+
+\end{document}
