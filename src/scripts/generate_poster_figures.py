@@ -394,7 +394,7 @@ def generate_pipeline_flowchart(
 
 def generate_nested_cv_diagram(
     output_path: Path | None = None,
-    figsize: tuple[float, float] = (6, 3.5),
+    figsize: tuple[float, float] = (6, 2.4),
     dpi: int = 300,
 ) -> Path:
     """
@@ -414,7 +414,7 @@ def generate_nested_cv_diagram(
 
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
     ax.set_xlim(0, 6)
-    ax.set_ylim(0, 3.5)
+    ax.set_ylim(1.4, 3.5)
     ax.axis("off")
 
     # Colors
@@ -474,19 +474,6 @@ def generate_nested_cv_diagram(
     # ===== FLOW DESCRIPTION =====
     ax.text(3, 1.6, "Inner CV tunes hyperparameters → Best model evaluates on test fold",
             ha="center", va="center", fontsize=10, fontweight="bold")
-
-    # ===== LEGEND =====
-    legend_items = [("Inner Train", inner_train_color), ("Validation", val_color), ("Test", test_color)]
-    for i, (lbl, c) in enumerate(legend_items):
-        x = 0.8 + i * 1.9
-        box = Rectangle((x, 1.0), 0.4, 0.25,
-                         facecolor=c, edgecolor="black", linewidth=1)
-        ax.add_patch(box)
-        ax.text(x + 0.5, 1.125, lbl, ha="left", va="center", fontsize=9, fontweight="bold")
-
-    # ===== SUMMARY =====
-    ax.text(3, 0.5, "Outer: 5 folds × 2 repeats = 10 evaluations  |  Inner: 3-fold CV",
-            ha="center", va="center", fontsize=9, style="italic")
 
     plt.tight_layout(pad=0.1)
 

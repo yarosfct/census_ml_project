@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2026.1.8)  28 JAN 2026 19:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2026.1.8)  29 JAN 2026 12:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1229,61 +1229,65 @@ Package pdftex.def Info: logo/pwr.png  used on input line 63.
 (pdftex.def)             Requested size: 113.81102pt x 165.59811pt.
 File: logo/pwr.png Graphic file (type png)
 <use logo/pwr.png>
-Package pdftex.def Info: logo/pwr.png  used on input line 322.
+Package pdftex.def Info: logo/pwr.png  used on input line 308.
 (pdftex.def)             Requested size: 113.81102pt x 165.59811pt.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <21.89> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 322.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 308.
 <figures/class_distribution.png, id=17, 715.473pt x 498.663pt>
 File: figures/class_distribution.png Graphic file (type png)
 <use figures/class_distribution.png>
-Package pdftex.def Info: figures/class_distribution.png  used on input line 322
+Package pdftex.def Info: figures/class_distribution.png  used on input line 308
 .
 (pdftex.def)             Requested size: 456.32678pt x 318.03992pt.
-LaTeX Font Info:    Calculating math sizes for size <21.89> on input line 322.
+LaTeX Font Info:    Calculating math sizes for size <21.89> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <21.89> on input line 322.
+(Font)              <21.89> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <15.32292> on input line 322.
+(Font)              <15.32292> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.94499> on input line 322.
+(Font)              <10.94499> on input line 308.
 <figures/pipeline_flowchart.png, id=18, 403.7484pt x 330.2739pt>
 File: figures/pipeline_flowchart.png Graphic file (type png)
 <use figures/pipeline_flowchart.png>
-Package pdftex.def Info: figures/pipeline_flowchart.png  used on input line 322
+Package pdftex.def Info: figures/pipeline_flowchart.png  used on input line 308
 .
 (pdftex.def)             Requested size: 507.0332pt x 414.79164pt.
-<figures/nested_cv.png, id=19, 398.2077pt x 258.0039pt>
+<figures/nested_cv.png, id=19, 398.2077pt x 178.5069pt>
 File: figures/nested_cv.png Graphic file (type png)
 <use figures/nested_cv.png>
-Package pdftex.def Info: figures/nested_cv.png  used on input line 322.
-(pdftex.def)             Requested size: 481.68pt x 312.09906pt.
-LaTeX Font Info:    Calculating math sizes for size <18.25> on input line 322.
+Package pdftex.def Info: figures/nested_cv.png  used on input line 308.
+(pdftex.def)             Requested size: 481.68pt x 215.93405pt.
+LaTeX Font Info:    Calculating math sizes for size <18.25> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <18.25> on input line 322.
+(Font)              <18.25> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12.77493> on input line 322.
+(Font)              <12.77493> on input line 308.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9.125> on input line 322.
+(Font)              <9.125> on input line 308.
 <figures/wilcoxon_heatmap.png, id=20, 399.1713pt x 339.4281pt>
 File: figures/wilcoxon_heatmap.png Graphic file (type png)
 <use figures/wilcoxon_heatmap.png>
-Package pdftex.def Info: figures/wilcoxon_heatmap.png  used on input line 322.
+Package pdftex.def Info: figures/wilcoxon_heatmap.png  used on input line 308.
 (pdftex.def)             Requested size: 481.68pt x 409.60092pt.
 <figures/model_comparison.png, id=21, 426.393pt x 281.853pt>
 File: figures/model_comparison.png Graphic file (type png)
 <use figures/model_comparison.png>
-Package pdftex.def Info: figures/model_comparison.png  used on input line 322.
+Package pdftex.def Info: figures/model_comparison.png  used on input line 308.
 (pdftex.def)             Requested size: 481.68pt x 318.40846pt.
 <figures/roc_curves.png, id=22, 498.663pt x 354.123pt>
 File: figures/roc_curves.png Graphic file (type png)
 <use figures/roc_curves.png>
-Package pdftex.def Info: figures/roc_curves.png  used on input line 322.
+Package pdftex.def Info: figures/roc_curves.png  used on input line 308.
 (pdftex.def)             Requested size: 481.68pt x 342.06155pt.
+
+Overfull \vbox (14.78322pt too high) detected at line 308
+ []
+
 
 
 File: logo/pwr.png Graphic file (type png)
 <use logo/pwr.png>
-Package pdftex.def Info: logo/pwr.png  used on input line 322.
+Package pdftex.def Info: logo/pwr.png  used on input line 308.
 (pdftex.def)             Requested size: 113.81102pt x 165.59811pt.
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fon
 ts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}
@@ -1317,17 +1321,16 @@ Here is how much of TeX's memory you used:
  58799 multiletter control sequences out of 15000+600000
  633538 words of font info for 100 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 128i,20n,123p,727b,993s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,20n,123p,872b,993s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf-dis
 t/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf-dist/fonts/type1/public/lm/
-lmss10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/share/
-texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf-dist/fonts/type
-1/public/lm/lmsso17.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
->
-Output written on poster.pdf (1 page, 767163 bytes).
+lmss17.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/shar
+e/texmf-dist/fonts/type1/public/lm/lmsso17.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmsy10.pfb>
+Output written on poster.pdf (1 page, 727017 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 79 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
  3 named destinations out of 1000 (max. 500000)
  78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

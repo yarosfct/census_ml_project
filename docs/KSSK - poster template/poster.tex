@@ -37,9 +37,9 @@
 
 \title{Adult Income Prediction: Impact of Preprocessing and Tuning on Classical ML Models}
 
-\author{Ferdynand Sikora \and Krystyna Supińska}
+\author{Lukas Marović \and Yaroslav Hayduk}
 % TODO: Update author names if needed
-\email{123456@student.pwr.edu.pl}
+\email{293855@student.pwr.edu.pl \qquad 293883@student.pwr.edu.pl}
 \institute{\href{https://kssk.pwr.edu.pl}{Katedra Systemów i Sieci Komputerowych}}
 
 % ====================
@@ -82,9 +82,7 @@
     tabular machine learning methods and illustrates the effects of preprocessing choices on 
     model performance.
 
-    \textbf{Research Question:} \textit{How much do preprocessing choices and hyperparameter 
-    tuning influence the predictive performance of classical machine-learning models on the 
-    Adult income prediction task?}
+    \textbf{Research Question:} \textit{How do preprocessing choices, hyperparameter tuning, and model selection influence standard performance metrics and fairness outcomes across demographic groups in supervised classification?}
 
   \end{block}
 
@@ -160,8 +158,8 @@
     \begin{itemize}
       \item \textbf{Logistic Regression} --- Linear baseline with L2 regularization
       \item \textbf{Naive Bayes (Gaussian)} --- Probabilistic generative baseline
-      \item \textbf{k-Nearest Neighbors} --- Instance-based method, sensitive to scaling
-      \item \textbf{Random Forest} --- Ensemble of decision trees with bagging
+      \item \textbf{k-Nearest Neighbors} --- Instance-based method
+      \item \textbf{Random Forest} --- Ensemble of decision trees
       \item \textbf{XGBoost} --- Gradient boosting with regularization
     \end{itemize}
 
@@ -219,6 +217,15 @@
 
   \end{block}
 
+  % ------------------
+  % Block: Fairness Analysis
+  % ------------------
+  \begin{block}{Fairness Analysis}
+
+    Accuracy is misleading due to class imbalance (76\% vs 24\%); we prioritize ROC-AUC and F1. Demographic Parity Difference ranges 0.19--0.21 and Equalized Odds Difference ranges 0.27--0.32 (both exceed the 0.1 threshold) with Logistic Regression achieving the lowest bias. Disparities are consistent across models, indicating systemic rather than model-specific bias. Most affected groups include females (13--16\% lower recall) and Asian-Pac-Islander and Amer-Indian-Eskimo groups (sensitivity likely driven by underrepresentation in the dataset).
+
+  \end{block}
+
 \end{column}
 
 \separatorcolumn
@@ -241,6 +248,7 @@
             compared to row dropping
       \item \textbf{Feature selection:} MI-based selection provided marginal benefit for 
             linear models but was unnecessary for tree-based methods
+      \item \textbf{Systematic bias:} All models exhibit consistent demographic bias
     \end{itemize}
 
   \end{alertblock}
@@ -272,28 +280,6 @@
   \end{block}
 
   % ------------------
-  % Table 2: Performance Summary
-  % ------------------
-  \begin{block}{Performance Summary}
-
-    \begin{table}
-      \centering
-      \small
-      \begin{tabular}{l c c c c}
-        \toprule
-        \textbf{Model} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} & \textbf{AUC} \\
-        \midrule
-        XGBoost  & 0.787{\tiny$\pm$0.005} & 0.653{\tiny$\pm$0.010} & 0.713{\tiny$\pm$0.007} & 0.930{\tiny$\pm$0.003} \\
-        RF       & 0.730{\tiny$\pm$0.011} & 0.624{\tiny$\pm$0.013} & 0.673{\tiny$\pm$0.010} & 0.904{\tiny$\pm$0.004} \\
-        Log.Reg. & 0.733{\tiny$\pm$0.009} & 0.586{\tiny$\pm$0.012} & 0.651{\tiny$\pm$0.009} & 0.904{\tiny$\pm$0.004} \\
-        \bottomrule
-      \end{tabular}
-      \caption{Top 3 models (mean $\pm$ std across 10 outer folds).}
-    \end{table}
-
-  \end{block}
-
-  % ------------------
   % Block: Discussion / Limitations
   % ------------------
   \begin{block}{Discussion \& Limitations}
@@ -310,7 +296,7 @@
   % ------------------
   \begin{block}{Conclusion}
 
-    XGBoost achieved the highest ROC-AUC (0.930), significantly outperforming all other models according to Wilcoxon signed-rank tests. Encoding missing values as a dedicated category proved effective, and Mutual Information feature selection offered marginal gains for non-tree models. For practitioners, gradient boosting with careful preprocessing provides the best accuracy--complexity tradeoff on tabular census data.
+    XGBoost achieved the highest ROC-AUC (0.930), significantly outperforming all other models according to Wilcoxon signed-rank tests. Encoding missing values as a dedicated category proved effective, and Mutual Information feature selection offered marginal gains for non-tree models. However, all models exhibit systematic bias: females are under-predicted for high income (lower recall), while racial minorities---particularly Asian-Pac-Islander and Amer-Indian-Eskimo groups---face accuracy and recall disparities. These patterns are consistent across model families, indicating that bias is data-driven rather than algorithm-specific. These findings highlight that optimizing predictive performance alone is insufficient; deploying such models in real-world settings (e.g., credit scoring, hiring) risks perpetuating existing socioeconomic inequalities.
 
   \end{block}
 
