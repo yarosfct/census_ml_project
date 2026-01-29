@@ -218,6 +218,37 @@ def get_feature_target_split(
     return X, y
 
 
+def get_protected_attributes(
+    df: pd.DataFrame,
+    sensitive_features: list[str] = None,
+) -> pd.DataFrame:
+    """
+    Extract protected/sensitive attributes from the dataset.
+
+    These attributes are used for fairness analysis but not for model training.
+
+    Args:
+        df: Input dataframe containing protected attributes.
+        sensitive_features: List of column names to extract.
+                          Default: ['sex', 'race']
+
+    Returns:
+        DataFrame containing only the sensitive attributes.
+    """
+    if sensitive_features is None:
+        sensitive_features = ["sex", "race"]
+
+    available_features = [col for col in sensitive_features if col in df.columns]
+
+    if not available_features:
+        logger.warning(
+            f"No sensitive features found in dataset. Available columns: {df.columns.tolist()}"
+        )
+        return pd.DataFrame()
+
+    return df[available_features]
+
+
 # Deprecated - kept for backward compatibility
 def load_raw_data(
     data_path: Path | None = None,

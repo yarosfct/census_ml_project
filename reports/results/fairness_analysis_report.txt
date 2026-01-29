@@ -1,0 +1,380 @@
+
+======================================================================
+MODEL: LogisticRegression
+======================================================================
+
+FAIRNESS METRICS ACROSS CV FOLDS:
+----------------------------------------------------------------------
+Demographic Parity Difference:
+  Mean:   0.2023 ± 0.0327
+  Range: [0.1700, 0.2661]
+
+Equalized Odds Difference:
+  Mean:   0.3162 ± 0.0941
+  Range: [0.1930, 0.5233]
+
+DEMOGRAPHIC GROUP BREAKDOWN:
+----------------------------------------------------------------------
+
+accuracy:
+  race:
+    ★ Amer-Indian-Eskimo                 :  0.9127 ± 0.0291
+    ▼ Asian-Pac-Islander                 :  0.8191 ± 0.0286
+      Black                              :  0.9117 ± 0.0078
+      Other                              :  0.9042 ± 0.0226
+      White                              :  0.8386 ± 0.0051
+    → Asian-Pac-Islander disadvantaged by 10.25%
+  sex:
+    ★ Female                             :  0.9257 ± 0.0052
+    ▼ Male                               :  0.8079 ± 0.0066
+    → Male disadvantaged by 12.73%
+
+precision:
+  race:
+    ★ Amer-Indian-Eskimo                 :  0.7609 ± 0.1665
+    ▼ Asian-Pac-Islander                 :  0.7014 ± 0.0586
+      Black                              :  0.7310 ± 0.0388
+      Other                              :  0.7146 ± 0.1496
+      White                              :  0.7364 ± 0.0133
+    → Asian-Pac-Islander disadvantaged by 7.82%
+  sex:
+    ★ Female                             :  0.7547 ± 0.0220
+    ▼ Male                               :  0.7320 ± 0.0164
+    → Male disadvantaged by 3.00%
+
+recall:
+  race:
+      Amer-Indian-Eskimo                 :  0.4518 ± 0.1244
+    ★ Asian-Pac-Islander                 :  0.6343 ± 0.0756
+      Black                              :  0.4771 ± 0.0485
+    ▼ Other                              :  0.4412 ± 0.1436
+      White                              :  0.5997 ± 0.0107
+    → Other disadvantaged by 30.45%
+  sex:
+    ▼ Female                             :  0.5127 ± 0.0226
+    ★ Male                               :  0.6078 ± 0.0112
+    → Female disadvantaged by 15.65%
+
+roc_auc:
+  race:
+      Amer-Indian-Eskimo                 :  0.7148 ± 0.0623
+    ★ Asian-Pac-Islander                 :  0.7636 ± 0.0362
+      Black                              :  0.7258 ± 0.0241
+    ▼ Other                              :  0.7081 ± 0.0681
+      White                              :  0.7617 ± 0.0064
+    → Other disadvantaged by 7.27%
+  sex:
+    ▼ Female                             :  0.7457 ± 0.0114
+    ★ Male                               :  0.7533 ± 0.0073
+    → Female disadvantaged by 1.01%
+
+FAIRNESS ASSESSMENT:
+----------------------------------------------------------------------
+✗ Demographic Parity: SIGNIFICANT BIAS (|diff| = 0.2023)
+✗ Equalized Odds: SIGNIFICANT BIAS (|diff| = 0.3162)
+======================================================================
+
+
+======================================================================
+MODEL: NaiveBayes
+======================================================================
+
+FAIRNESS METRICS ACROSS CV FOLDS:
+----------------------------------------------------------------------
+Demographic Parity Difference:
+  Mean:   0.4923 ± 0.0184
+  Range: [0.4724, 0.5201]
+
+Equalized Odds Difference:
+  Mean:   0.4737 ± 0.0192
+  Range: [0.4500, 0.5038]
+
+DEMOGRAPHIC GROUP BREAKDOWN:
+----------------------------------------------------------------------
+
+accuracy:
+  race:
+      Amer-Indian-Eskimo                 :  0.7802 ± 0.0387
+      Asian-Pac-Islander                 :  0.7797 ± 0.0272
+    ★ Black                              :  0.8628 ± 0.0130
+      Other                              :  0.8425 ± 0.0359
+    ▼ White                              :  0.7509 ± 0.0111
+    → White disadvantaged by 12.97%
+  sex:
+    ★ Female                             :  0.9112 ± 0.0050
+    ▼ Male                               :  0.6919 ± 0.0146
+    → Male disadvantaged by 24.07%
+
+precision:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.3357 ± 0.0590
+    ★ Asian-Pac-Islander                 :  0.5780 ± 0.0455
+      Black                              :  0.4754 ± 0.0342
+      Other                              :  0.4368 ± 0.0938
+      White                              :  0.5156 ± 0.0134
+    → Amer-Indian-Eskimo disadvantaged by 41.91%
+  sex:
+    ★ Female                             :  0.6649 ± 0.0315
+    ▼ Male                               :  0.5042 ± 0.0145
+    → Male disadvantaged by 24.16%
+
+recall:
+  race:
+      Amer-Indian-Eskimo                 :  0.8026 ± 0.1263
+      Asian-Pac-Islander                 :  0.8193 ± 0.0471
+    ▼ Black                              :  0.7980 ± 0.0294
+      Other                              :  0.8071 ± 0.1459
+    ★ White                              :  0.8491 ± 0.0052
+    → Black disadvantaged by 6.02%
+  sex:
+    ▼ Female                             :  0.4420 ± 0.0155
+    ★ Male                               :  0.9158 ± 0.0065
+    → Female disadvantaged by 51.73%
+
+roc_auc:
+  race:
+      Amer-Indian-Eskimo                 :  0.7904 ± 0.0539
+      Asian-Pac-Islander                 :  0.7918 ± 0.0306
+    ★ Black                              :  0.8351 ± 0.0186
+      Other                              :  0.8286 ± 0.0782
+    ▼ White                              :  0.7825 ± 0.0078
+    → White disadvantaged by 6.30%
+  sex:
+    ▼ Female                             :  0.7067 ± 0.0077
+    ★ Male                               :  0.7530 ± 0.0100
+    → Female disadvantaged by 6.15%
+
+FAIRNESS ASSESSMENT:
+----------------------------------------------------------------------
+✗ Demographic Parity: SIGNIFICANT BIAS (|diff| = 0.4923)
+✗ Equalized Odds: SIGNIFICANT BIAS (|diff| = 0.4737)
+======================================================================
+
+
+======================================================================
+MODEL: KNN
+======================================================================
+
+FAIRNESS METRICS ACROSS CV FOLDS:
+----------------------------------------------------------------------
+Demographic Parity Difference:
+  Mean:   0.2117 ± 0.0308
+  Range: [0.1751, 0.2683]
+
+Equalized Odds Difference:
+  Mean:   0.2991 ± 0.0997
+  Range: [0.1750, 0.4344]
+
+DEMOGRAPHIC GROUP BREAKDOWN:
+----------------------------------------------------------------------
+
+accuracy:
+  race:
+      Amer-Indian-Eskimo                 :  0.8840 ± 0.0313
+    ▼ Asian-Pac-Islander                 :  0.8008 ± 0.0271
+    ★ Black                              :  0.9000 ± 0.0126
+      Other                              :  0.8910 ± 0.0291
+      White                              :  0.8242 ± 0.0043
+    → Asian-Pac-Islander disadvantaged by 11.02%
+  sex:
+    ★ Female                             :  0.9165 ± 0.0039
+    ▼ Male                               :  0.7910 ± 0.0060
+    → Male disadvantaged by 13.70%
+
+precision:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.5660 ± 0.1797
+      Asian-Pac-Islander                 :  0.6481 ± 0.0549
+      Black                              :  0.6239 ± 0.0527
+      Other                              :  0.5755 ± 0.0770
+    ★ White                              :  0.6923 ± 0.0109
+    → Amer-Indian-Eskimo disadvantaged by 18.24%
+  sex:
+    ▼ Female                             :  0.6791 ± 0.0247
+    ★ Male                               :  0.6872 ± 0.0129
+    → Female disadvantaged by 1.18%
+
+recall:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.5060 ± 0.1133
+    ★ Asian-Pac-Islander                 :  0.6460 ± 0.0549
+      Black                              :  0.5279 ± 0.0584
+      Other                              :  0.5344 ± 0.1785
+      White                              :  0.5944 ± 0.0126
+    → Amer-Indian-Eskimo disadvantaged by 21.67%
+  sex:
+    ▼ Female                             :  0.5025 ± 0.0190
+    ★ Male                               :  0.6080 ± 0.0114
+    → Female disadvantaged by 17.35%
+
+roc_auc:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.7212 ± 0.0496
+    ★ Asian-Pac-Islander                 :  0.7540 ± 0.0321
+      Black                              :  0.7409 ± 0.0310
+      Other                              :  0.7385 ± 0.0819
+      White                              :  0.7502 ± 0.0064
+    → Amer-Indian-Eskimo disadvantaged by 4.35%
+  sex:
+    ▼ Female                             :  0.7360 ± 0.0088
+    ★ Male                               :  0.7411 ± 0.0069
+    → Female disadvantaged by 0.68%
+
+FAIRNESS ASSESSMENT:
+----------------------------------------------------------------------
+✗ Demographic Parity: SIGNIFICANT BIAS (|diff| = 0.2117)
+✗ Equalized Odds: SIGNIFICANT BIAS (|diff| = 0.2991)
+======================================================================
+
+
+======================================================================
+MODEL: RandomForest
+======================================================================
+
+FAIRNESS METRICS ACROSS CV FOLDS:
+----------------------------------------------------------------------
+Demographic Parity Difference:
+  Mean:   0.1971 ± 0.0174
+  Range: [0.1741, 0.2377]
+
+Equalized Odds Difference:
+  Mean:   0.2728 ± 0.1466
+  Range: [0.0954, 0.5256]
+
+DEMOGRAPHIC GROUP BREAKDOWN:
+----------------------------------------------------------------------
+
+accuracy:
+  race:
+      Amer-Indian-Eskimo                 :  0.9052 ± 0.0232
+    ▼ Asian-Pac-Islander                 :  0.8364 ± 0.0231
+      Black                              :  0.9173 ± 0.0096
+    ★ Other                              :  0.9353 ± 0.0204
+      White                              :  0.8423 ± 0.0033
+    → Asian-Pac-Islander disadvantaged by 10.58%
+  sex:
+    ★ Female                             :  0.9273 ± 0.0050
+    ▼ Male                               :  0.8136 ± 0.0031
+    → Male disadvantaged by 12.27%
+
+precision:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.6747 ± 0.1577
+      Asian-Pac-Islander                 :  0.7468 ± 0.0612
+      Black                              :  0.7259 ± 0.0664
+    ★ Other                              :  0.8242 ± 0.1147
+      White                              :  0.7289 ± 0.0090
+    → Amer-Indian-Eskimo disadvantaged by 18.13%
+  sex:
+    ★ Female                             :  0.7400 ± 0.0239
+    ▼ Male                               :  0.7277 ± 0.0091
+    → Male disadvantaged by 1.67%
+
+recall:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.4972 ± 0.1054
+    ★ Asian-Pac-Islander                 :  0.6436 ± 0.0563
+      Black                              :  0.5595 ± 0.0425
+      Other                              :  0.5958 ± 0.1933
+      White                              :  0.6356 ± 0.0099
+    → Amer-Indian-Eskimo disadvantaged by 22.74%
+  sex:
+    ▼ Female                             :  0.5559 ± 0.0245
+    ★ Male                               :  0.6446 ± 0.0114
+    → Female disadvantaged by 13.77%
+
+roc_auc:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.7304 ± 0.0481
+      Asian-Pac-Islander                 :  0.7785 ± 0.0276
+      Black                              :  0.7643 ± 0.0225
+    ★ Other                              :  0.7900 ± 0.0954
+      White                              :  0.7757 ± 0.0049
+    → Amer-Indian-Eskimo disadvantaged by 7.55%
+  sex:
+    ▼ Female                             :  0.7654 ± 0.0125
+    ★ Male                               :  0.7675 ± 0.0050
+    → Female disadvantaged by 0.27%
+
+FAIRNESS ASSESSMENT:
+----------------------------------------------------------------------
+⚠ Demographic Parity: MODERATE BIAS (|diff| = 0.1971)
+✗ Equalized Odds: SIGNIFICANT BIAS (|diff| = 0.2728)
+======================================================================
+
+
+======================================================================
+MODEL: XGBoost
+======================================================================
+
+FAIRNESS METRICS ACROSS CV FOLDS:
+----------------------------------------------------------------------
+Demographic Parity Difference:
+  Mean:   0.2001 ± 0.0198
+  Range: [0.1672, 0.2280]
+
+Equalized Odds Difference:
+  Mean:   0.2853 ± 0.0913
+  Range: [0.1132, 0.4000]
+
+DEMOGRAPHIC GROUP BREAKDOWN:
+----------------------------------------------------------------------
+
+accuracy:
+  race:
+      Amer-Indian-Eskimo                 :  0.9205 ± 0.0217
+    ▼ Asian-Pac-Islander                 :  0.8432 ± 0.0231
+      Black                              :  0.9261 ± 0.0070
+    ★ Other                              :  0.9291 ± 0.0171
+      White                              :  0.8651 ± 0.0052
+    → Asian-Pac-Islander disadvantaged by 9.25%
+  sex:
+    ★ Female                             :  0.9360 ± 0.0043
+    ▼ Male                               :  0.8400 ± 0.0062
+    → Male disadvantaged by 10.25%
+
+precision:
+  race:
+      Amer-Indian-Eskimo                 :  0.8097 ± 0.2032
+    ▼ Asian-Pac-Islander                 :  0.7441 ± 0.0473
+      Black                              :  0.7925 ± 0.0451
+    ★ Other                              :  0.8149 ± 0.0905
+      White                              :  0.7882 ± 0.0126
+    → Asian-Pac-Islander disadvantaged by 8.69%
+  sex:
+    ★ Female                             :  0.7963 ± 0.0176
+    ▼ Male                               :  0.7854 ± 0.0150
+    → Male disadvantaged by 1.37%
+
+recall:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.4730 ± 0.1097
+    ★ Asian-Pac-Islander                 :  0.6826 ± 0.0531
+      Black                              :  0.5630 ± 0.0352
+      Other                              :  0.5771 ± 0.1310
+      White                              :  0.6645 ± 0.0128
+    → Amer-Indian-Eskimo disadvantaged by 30.70%
+  sex:
+    ▼ Female                             :  0.5865 ± 0.0240
+    ★ Male                               :  0.6716 ± 0.0124
+    → Female disadvantaged by 12.68%
+
+roc_auc:
+  race:
+    ▼ Amer-Indian-Eskimo                 :  0.7278 ± 0.0559
+      Asian-Pac-Islander                 :  0.7948 ± 0.0270
+      Black                              :  0.7708 ± 0.0183
+      Other                              :  0.7791 ± 0.0623
+    ★ White                              :  0.8005 ± 0.0073
+    → Amer-Indian-Eskimo disadvantaged by 9.07%
+  sex:
+    ▼ Female                             :  0.7837 ± 0.0119
+    ★ Male                               :  0.7941 ± 0.0077
+    → Female disadvantaged by 1.32%
+
+FAIRNESS ASSESSMENT:
+----------------------------------------------------------------------
+✗ Demographic Parity: SIGNIFICANT BIAS (|diff| = 0.2001)
+✗ Equalized Odds: SIGNIFICANT BIAS (|diff| = 0.2853)
+======================================================================
+

@@ -1,0 +1,69 @@
+
+======================================================================
+STATISTICAL COMPARISON OF MODELS
+======================================================================
+Using Wilcoxon signed-rank test on ROC-AUC scores
+Paired by CV fold (10 total: 5 splits × 2 repeats)
+Significance level: Alpha = 0.05 (not adjusted for multiple comparisons)
+
+KNN vs LogisticRegression:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8686 vs 0.9023
+
+KNN vs NaiveBayes:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8686 vs 0.8793
+
+KNN vs RandomForest:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8686 vs 0.9020
+
+KNN vs XGBoost:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8686 vs 0.9286
+
+LogisticRegression vs NaiveBayes:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.9023 vs 0.8793
+
+LogisticRegression vs RandomForest:
+  Test Statistic: 23.0000
+  P-value: 0.695312
+  Significant (α=0.05): NO
+  Mean ROC-AUC: 0.9023 vs 0.9020
+
+LogisticRegression vs XGBoost:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.9023 vs 0.9286
+
+NaiveBayes vs RandomForest:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8793 vs 0.9020
+
+NaiveBayes vs XGBoost:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.8793 vs 0.9286
+
+RandomForest vs XGBoost:
+  Test Statistic: 0.0000
+  P-value: 0.001953
+  Significant (α=0.05): YES
+  Mean ROC-AUC: 0.9020 vs 0.9286
+
+======================================================================

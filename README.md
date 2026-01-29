@@ -20,25 +20,23 @@ This project aims to evaluate how different preprocessing strategies and hyperpa
 ├── docs/                    # Documentation and literature
 │   ├── Literature/          # Reference papers
 │   └── ML_First_Milestone_Report.md
-├── notebooks/               # Jupyter notebooks for exploration
-│   └── README.md
 ├── reports/                 # Generated analysis reports
 │   ├── figures/             # Generated graphics and figures
+│   ├── results/             # Generated results
 │   ├── tables/              # Generated tables
-│   └── README.md
+│   └── dataset_summary.md   # Dataset analysis summary
 ├── src/                     # Source code
 │   ├── census_ml/           # Main package
 │   │   ├── config.py        # Configuration and constants
 │   │   ├── data/            # Data loading utilities
-│   │   ├── features/        # Feature engineering and preprocessing
+│   │   ├── fairness/        # Fairness analysis
+│   │   ├── features/        # Preprocessing
 │   │   ├── models/          # Model definitions and utilities
 │   │   ├── eval/            # Evaluation and cross-validation
 │   │   └── utils/           # General utilities (logging, etc.)
 │   └── scripts/             # Standalone scripts
-│       ├── quick_check.py   # Verify package setup
+│       ├── inspect_and_prepare.py   # Dataset analysis
 │       └── run_experiments.py  # Main experiment runner (to be implemented)
-├── tests/                   # Test suite
-│   └── test_imports.py      # Test package integrity
 ├── .editorconfig            # Editor configuration
 ├── .gitignore               # Git ignore rules
 ├── Makefile                 # Automation commands
@@ -85,25 +83,6 @@ pip install --upgrade pip
 pip install -e ".[dev]"
 ```
 
-4. **Verify installation**
-
-```bash
-# Using make
-make quickcheck
-
-# Or manually
-python src/scripts/quick_check.py
-```
-
-5. **Run tests**
-
-```bash
-# Using make
-make test
-
-# Or manually
-pytest
-```
 
 ### Download the Dataset
 
@@ -125,77 +104,17 @@ cd ../..
 
 See `data/README.md` for more information about the dataset.
 
-### Steps 1+2: Dataset Inspection and Variant Preparation
+### Running the experiments
 
-After downloading the dataset, run the inspection and preparation script:
-
-```bash
-# Inspect dataset and create variants (auto-detects format)
-python -m src.scripts.inspect_and_prepare
-
-# Or specify format explicitly
-python -m src.scripts.inspect_and_prepare --source uci_split
-```
-
-**What this does:**
-1. **Loads the dataset** - Automatically detects UCI split or CSV format
-2. **Runs comprehensive inspection** - Generates EDA statistics and visualizations
-3. **Creates two dataset variants**:
-   - **DROP variant**: Removes all rows with missing values (complete-case analysis)
-   - **IMPUTE variant**: Preserves NaN values for future pipeline-based imputation (prevents leakage)
-
-**Generated artifacts:**
-- `reports/dataset_summary.md` - Comprehensive markdown report
-- `reports/tables/*.csv` - Statistical tables (missingness, target distribution, etc.)
-- `reports/figures/*.png` - Visualizations (distributions, missing value plots, etc.)
-
-**Dataset Variants Explained:**
-
-The two variants support different modeling approaches:
-
-1. **DROP Variant** (Complete-case analysis)
-   - All rows with any missing values are removed
-   - Smaller dataset but no imputation needed
-   - Use when you prefer to avoid imputation assumptions
-
-2. **IMPUTE Variant** (Pipeline-based imputation)
-   - NaN values preserved for sklearn Pipeline imputation
-   - Larger dataset, requires proper imputation in cross-validation
-   - Prevents data leakage by deferring imputation to Pipeline
-   - **Important**: Must use `SimpleImputer` inside sklearn `Pipeline` during cross-validation
-
-**Leakage Prevention:**
-
-No preprocessing is fitted on the full dataset. The IMPUTE variant only marks missing values; actual imputation must happen inside cross-validation folds to prevent test set leakage.
-
-## Development
-
-### Code Quality
+After downloading the dataset, run the experiments:
 
 ```bash
-# Format code
-make format  # Uses ruff format
-
-# Lint code
-make lint    # Uses ruff check
-
-# Run tests
-make test    # Uses pytest
+python -m src.scripts.run_experiments
 ```
 
-### Makefile Commands
 
-- `make venv` - Create virtual environment
-- `make install` - Install dependencies
-- `make test` - Run test suite
-- `make lint` - Run linter
-- `make format` - Format code
-- `make quickcheck` - Run quick verification script
-- `make clean` - Remove generated files
 
 ## Reproducibility
-
-This project follows best practices for reproducible machine learning research:
 
 - **Random seed**: All random operations use `RANDOM_SEED=42` (configurable in `src/census_ml/config.py`)
 - **Dependency pinning**: All dependencies are specified in `pyproject.toml`
@@ -204,32 +123,6 @@ This project follows best practices for reproducible machine learning research:
 - **Results tracking**: Experimental results will be saved in `reports/`
 
 
-## Project Phases
-
-- **✓ Step 0**: Project structure and boilerplate
-- **✓ Steps 1+2**: Dataset inspection and variant preparation
-- **Step 3**: Baseline preprocessing pipeline
-- **Step 4**: Enhanced preprocessing and model training
-- **Step 5**: Hyperparameter tuning and evaluation
-- **Step 6**: Statistical comparison and reporting
-
 ## References
 
 - Becker, B. & Kohavi, R. (1996). *Adult* [Dataset]. UCI Machine Learning Repository. https://archive.ics.uci.edu/ml/datasets/adult
-
-### Verification
-
-Run these commands to verify the setup:
-
-```bash
-# Check imports and package structure
-python src/scripts/quick_check.py
-
-# Run test suite
-pytest
-
-# Check code quality
-ruff check .
-```
-
-All checks should pass without errors.

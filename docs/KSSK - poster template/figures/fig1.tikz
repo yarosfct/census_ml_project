@@ -1,0 +1,5 @@
+\begin{tikzpicture}[scale=6]
+\draw[step=0.25cm,color=gray] (-1,-1) grid (1,1);
+\draw (1,0) -- (0.2,0.2) -- (0,1) -- (-0.2,0.2) -- (-1,0)
+  -- (-0.2,-0.2) -- (0,-1) -- (0.2,-0.2) -- cycle;
+\end{tikzpicture}
